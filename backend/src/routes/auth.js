@@ -2,12 +2,108 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
+const nodemailer = require('nodemailer');
 const { body, validationResult } = require('express-validator');
 const { PrismaClient } = require('@prisma/client');
 const authMiddleware = require('../middleware/auth');
 
 const router = express.Router();
 const prisma = new PrismaClient();
+
+// ── Email helper ──────────────────────────────────────────────────────────────
+
+function createTransporter() {
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) return null;
+  return nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+}
+
+async function sendPasswordResetEmail(toEmail, resetUrl) {
+  const transporter = createTransporter();
+  if (!transporter) {
+    console.warn('EMAIL_USER / EMAIL_PASS not set — skipping email send.');
+    return false;
+  }
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head><meta charset="utf-8"></head>
+      <body style="margin:0;padding:0;background:#0f1117;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background:#0f1117;padding:40px 16px;">
+          <tr>
+            <td align="center">
+              <table width="480" cellpadding="0" cellspacing="0" style="background:#1a1d27;border-radius:16px;border:1px solid #2a2d3e;overflow:hidden;">
+                <!-- Header -->
+                <tr>
+                  <td style="padding:32px 32px 24px;border-bottom:1px solid #2a2d3e;">
+                    <table cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td style="background:#6366f1;border-radius:8px;width:32px;height:32px;text-align:center;vertical-align:middle;">
+                          <span style="color:#fff;font-size:16px;font-weight:bold;">F</span>
+                        </td>
+                        <td style="padding-left:10px;">
+                          <span style="color:#f0f0f5;font-size:18px;font-weight:700;">Folio</span>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <!-- Body -->
+                <tr>
+                  <td style="padding:32px;">
+                    <h1 style="margin:0 0 12px;color:#f0f0f5;font-size:22px;font-weight:700;">Reset your password</h1>
+                    <p style="margin:0 0 24px;color:#8b8fa8;font-size:14px;line-height:1.6;">
+                      We received a request to reset the password for your Folio account.
+                      Click the button below to choose a new password. This link expires in <strong style="color:#f0f0f5;">1 hour</strong>.
+                    </p>
+                    <table cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
+                      <tr>
+                        <td style="background:#6366f1;border-radius:10px;">
+                          <a href="${resetUrl}"
+                             style="display:inline-block;padding:12px 28px;color:#fff;font-size:14px;font-weight:600;text-decoration:none;">
+                            Reset Password
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                    <p style="margin:0 0 8px;color:#4a4d62;font-size:12px;line-height:1.6;">
+                      If you didn't request a password reset, you can safely ignore this email — your password won't change.
+                    </p>
+                    <p style="margin:0;color:#4a4d62;font-size:12px;line-height:1.6;">
+                      Or copy this link into your browser:<br>
+                      <span style="color:#818cf8;word-break:break-all;">${resetUrl}</span>
+                    </p>
+                  </td>
+                </tr>
+                <!-- Footer -->
+                <tr>
+                  <td style="padding:20px 32px;border-top:1px solid #2a2d3e;">
+                    <p style="margin:0;color:#4a4d62;font-size:11px;">Folio · Powered by Open Library</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+    </html>
+  `;
+
+  await transporter.sendMail({
+    from: `"Folio" <${process.env.EMAIL_USER}>`,
+    to: toEmail,
+    subject: 'Reset your Folio password',
+    html,
+  });
+
+  return true;
+}
 
 function generateToken(user) {
   return jwt.sign(
@@ -123,13 +219,19 @@ router.post('/forgot-password', async (req, res) => {
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
     const resetUrl = `${frontendUrl}/reset-password?token=${token}`;
 
-    // Log to console for debugging (useful on Railway)
     console.log(`\n🔑 Password reset requested for: ${email}`);
     console.log(`Reset URL: ${resetUrl}\n`);
 
+    // Send email — falls back gracefully if env vars are not set
+    try {
+      await sendPasswordResetEmail(user.email, resetUrl);
+    } catch (emailErr) {
+      console.error('Failed to send reset email:', emailErr.message);
+      // Don't surface email errors to the user — token is still valid
+    }
+
     res.json({
       message: 'If an account with that email exists, a reset link has been sent.',
-      // Return the URL in non-production so it can be used without an email service
       ...(process.env.NODE_ENV !== 'production' && { devResetUrl: resetUrl }),
     });
   } catch (err) {
