@@ -138,7 +138,7 @@ export default function TrendingPage() {
         {!loading && books.length === 0 && !error && (
           <div className="text-center py-20">
             <BookOpen className="w-12 h-12 mx-auto mb-4 opacity-30" style={{color:'#4a4d62'}} />
-            <p className="text-base" style={{color:'#8b8fa8'}}>No Trending Books Available Right Now.</p>
+            <p className="text-base" style={{color:'#8b8fa8'}}>No trending books available right now.</p>
           </div>
         )}
       </div>

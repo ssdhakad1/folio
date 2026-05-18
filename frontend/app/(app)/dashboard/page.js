@@ -398,7 +398,7 @@ function UpNextCard({ entries, loading }) {
         </div>
       ) : wishlist.length === 0 ? (
         <div className="text-center py-4">
-          <p className="text-xs" style={{ color: '#4a4d62' }}>No Books in Your Wishlist Yet.</p>
+          <p className="text-xs" style={{ color: '#4a4d62' }}>No books in your wishlist yet.</p>
           <Link href="/search" className="text-xs text-indigo-400 hover:text-indigo-300 mt-1 inline-block">
             Search to add some →
           </Link>
@@ -675,7 +675,7 @@ export default function DashboardPage() {
               ) : forYou.empty ? (
                 <div className="rounded-2xl border px-6 py-8 text-center" style={{ backgroundColor: '#1a1d27', borderColor: '#2a2d3e' }}>
                   <BookMarked className="w-8 h-8 mx-auto mb-3" style={{ color: '#4a4d62' }} />
-                  <p className="text-sm font-medium mb-1" style={{ color: '#8b8fa8' }}>No Personalised Picks Yet</p>
+                  <p className="text-sm font-medium mb-1" style={{ color: '#8b8fa8' }}>No personalised picks yet</p>
                   <p className="text-xs" style={{ color: '#4a4d62' }}>
                     Mark books as Finished in your{' '}
                     <Link href="/library" className="text-indigo-400 hover:text-indigo-300">library</Link>{' '}
