@@ -6,10 +6,11 @@ import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import {
   User, Calendar, BookOpen, CheckCircle, Bookmark,
-  Star, MessageSquare, Loader2, ArrowLeft, Search, X,
+  Star, MessageSquare, ArrowLeft, Search, X,
 } from 'lucide-react';
 import { useAuth } from '../../../../context/AuthContext';
 import { community as communityApi } from '../../../../lib/api';
+import LoadingSpinner from '../../../../components/LoadingSpinner';
 
 // ── Stat tile ─────────────────────────────────────────────────────────────────
 
@@ -85,11 +86,7 @@ export default function ReaderProfilePage() {
   }, [profile, bookSearch]);
 
   if (authLoading || !authUser) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#0f1117' }}>
-        <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#818cf8' }} />
-      </div>
-    );
+    return <LoadingSpinner text="Loading profile…" />;
   }
 
   const joinDate = profile?.user?.createdAt
@@ -116,7 +113,10 @@ export default function ReaderProfilePage() {
         {/* Loading */}
         {loading && (
           <div className="flex items-center justify-center py-24">
-            <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#818cf8' }} />
+            <div className="text-center">
+              <div className="w-10 h-10 border-2 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin mx-auto mb-6" />
+              <p style={{ color: '#8b8fa8' }}>Loading profile…</p>
+            </div>
           </div>
         )}
 

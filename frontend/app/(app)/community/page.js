@@ -4,9 +4,10 @@ import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { Users, Star, BookOpen, MessageSquare, Loader2, Search, X } from 'lucide-react';
+import { Users, Star, BookOpen, MessageSquare, Search, X } from 'lucide-react';
 import { useAuth } from '../../../context/AuthContext';
 import { community as communityApi } from '../../../lib/api';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 
 // ── Review card ───────────────────────────────────────────────────────────────
 
@@ -189,11 +190,7 @@ export default function CommunityPage() {
   }, [profiles, userSearch]);
 
   if (authLoading || !user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#0f1117' }}>
-        <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#818cf8' }} />
-      </div>
-    );
+    return <LoadingSpinner text="Loading community…" />;
   }
 
   return (
@@ -211,7 +208,10 @@ export default function CommunityPage() {
 
         {loading ? (
           <div className="flex items-center justify-center py-24">
-            <Loader2 className="w-6 h-6 animate-spin" style={{ color: '#818cf8' }} />
+            <div className="text-center">
+              <div className="w-10 h-10 border-2 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin mx-auto mb-6" />
+              <p style={{ color: '#8b8fa8' }}>Loading community…</p>
+            </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

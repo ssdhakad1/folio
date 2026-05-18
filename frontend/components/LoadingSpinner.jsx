@@ -1,15 +1,10 @@
-export default function LoadingSpinner({ size = 'md', className = '' }) {
-  const sizes = {
-    sm: 'w-4 h-4',
-    md: 'w-8 h-8',
-    lg: 'w-12 h-12',
-  };
-
+export default function LoadingSpinner({ text = 'Loading…' }) {
   return (
-    <div className={`flex items-center justify-center ${className}`}>
-      <div
-        className={`${sizes[size] || sizes.md} border-2 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin`}
-      />
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#0f1117' }}>
+      <div className="text-center">
+        <div className="w-10 h-10 border-2 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin mx-auto mb-6" />
+        {text && <p style={{ color: '#8b8fa8' }}>{text}</p>}
+      </div>
     </div>
   );
 }

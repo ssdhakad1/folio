@@ -68,15 +68,16 @@ export default function Navbar() {
   const router = useRouter();
   const { user, logout, deleteAccount } = useAuth();
 
-  const [mobileOpen,     setMobileOpen]     = useState(false);
-  const [profileOpen,    setProfileOpen]    = useState(false);
+  const [mobileOpen,      setMobileOpen]      = useState(false);
+  const [profileOpen,     setProfileOpen]     = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [deleteLoading,  setDeleteLoading]  = useState(false);
+  const [deleteLoading,   setDeleteLoading]   = useState(false);
+  const [signingOut,      setSigningOut]      = useState(false);
 
   const dropdownRef = useRef(null);
 
-  // Close mobile menu on route change
-  useEffect(() => { setMobileOpen(false); setProfileOpen(false); }, [pathname]);
+  // Close mobile menu on route change; also clear signing-out overlay
+  useEffect(() => { setMobileOpen(false); setProfileOpen(false); setSigningOut(false); }, [pathname]);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -96,6 +97,13 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handleClick);
   }, [profileOpen]);
 
+  const handleSignOut = () => {
+    setSigningOut(true);
+    // Small delay lets React paint the overlay before navigation starts,
+    // which hides the browser's own progress bar.
+    setTimeout(() => logout(), 100);
+  };
+
   const handleDeleteAccount = async () => {
     setDeleteLoading(true);
     try {
@@ -108,6 +116,19 @@ export default function Navbar() {
 
   return (
     <>
+      {/* Full-page sign-out overlay — covers browser progress bar */}
+      {signingOut && (
+        <div
+          className="fixed inset-0 flex items-center justify-center"
+          style={{ backgroundColor: '#0f1117', zIndex: 9999 }}
+        >
+          <div className="text-center">
+            <div className="w-10 h-10 border-2 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin mx-auto mb-6" />
+            <p style={{ color: '#8b8fa8' }}>Signing out…</p>
+          </div>
+        </div>
+      )}
+
       <nav className="fixed top-0 left-0 right-0 z-40 h-16 border-b" style={{backgroundColor:'rgba(15,17,23,0.95)', backdropFilter:'blur(16px)', borderColor:'#2a2d3e'}}>
         <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
 
@@ -184,7 +205,7 @@ export default function Navbar() {
                         View Profile
                       </Link>
                       <button
-                        onClick={() => { setProfileOpen(false); logout(); }}
+                        onClick={() => { setProfileOpen(false); handleSignOut(); }}
                         className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all hover:bg-[#0f1117] w-full text-left"
                         style={{color:'#8b8fa8'}}
                       >
@@ -279,7 +300,7 @@ export default function Navbar() {
                 View Profile
               </Link>
               <button
-                onClick={logout}
+                onClick={handleSignOut}
                 className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all w-full hover:bg-[#0f1117]"
                 style={{color:'#8b8fa8'}}
               >
