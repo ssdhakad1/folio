@@ -56,7 +56,7 @@ export default function ForgotPasswordPage() {
               <h2 className="text-base font-bold mb-2" style={{color:'#f0f0f5'}}>Check Your Inbox</h2>
               <p className="text-sm leading-relaxed mb-6" style={{color:'#8b8fa8'}}>
                 If an account with <span className="font-medium" style={{color:'#f0f0f5'}}>{email}</span> exists,
-                a password reset link has been sent.
+                a password reset link has been sent. Check your inbox and <span className="font-medium" style={{color:'#f0f0f5'}}>spam folder</span>.
               </p>
 
               {/* Dev mode: show reset URL directly */}
