@@ -472,11 +472,10 @@ export default function HomePage() {
                         )}
                         {book.rank && book.rank <= 3 && (
                           <div
-                            className="absolute top-1.5 left-1.5 w-5 h-5 rounded-full flex items-center justify-center font-bold"
+                            className="absolute top-1.5 left-1.5 w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs leading-none"
                             style={{
                               backgroundColor: book.rank === 1 ? '#FFD700' : book.rank === 2 ? '#94a3b8' : '#b45309',
                               color: book.rank === 3 ? '#fff' : '#0f1117',
-                              fontSize: '10px',
                             }}
                           >
                             {book.rank}
