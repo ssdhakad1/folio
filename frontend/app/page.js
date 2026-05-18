@@ -8,7 +8,7 @@ import { useAuth } from '../context/AuthContext';
 import {
   BookOpen, Sparkles, Library, TrendingUp, BarChart2,
   Search, Star, Users, Target, MessageSquare, ArrowRight,
-  Quote, CheckCircle, BookMarked, Flame,
+  FileText, CheckCircle, User,
 } from 'lucide-react';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
@@ -81,7 +81,6 @@ export default function HomePage() {
 
         {/* ── Hero ─────────────────────────────────────────────────────────── */}
         <section className="relative overflow-hidden text-center px-6 pt-20 pb-24">
-          {/* Background radial glow */}
           <div
             className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[500px] pointer-events-none"
             style={{
@@ -91,7 +90,6 @@ export default function HomePage() {
           />
 
           <div className="relative max-w-3xl mx-auto">
-            {/* Badge */}
             <div
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-sm font-medium mb-8"
               style={{ backgroundColor: 'rgba(99,102,241,0.1)', borderColor: 'rgba(99,102,241,0.3)', color: '#818cf8' }}
@@ -100,7 +98,6 @@ export default function HomePage() {
               Your complete reading companion
             </div>
 
-            {/* Headline */}
             <h1
               className="font-bold tracking-tight leading-tight mb-6"
               style={{ fontSize: 'clamp(2.4rem, 5.5vw, 4rem)', color: '#f0f0f5' }}
@@ -111,7 +108,6 @@ export default function HomePage() {
               </span>
             </h1>
 
-            {/* Subtext */}
             <p
               className="text-base md:text-lg leading-relaxed mb-10 max-w-xl mx-auto"
               style={{ color: '#8b8fa8' }}
@@ -120,7 +116,6 @@ export default function HomePage() {
               hit your reading goals, and connect with a community of book lovers. Free, forever.
             </p>
 
-            {/* CTAs */}
             <div className="flex items-center justify-center gap-3 mb-12 flex-wrap">
               <Link
                 href="/register"
@@ -139,15 +134,14 @@ export default function HomePage() {
               </Link>
             </div>
 
-            {/* Feature pills */}
             <div className="flex flex-wrap items-center justify-center gap-2">
               {[
-                { icon: Library,     label: 'Library Tracking',        color: '#4ade80' },
-                { icon: Sparkles,    label: '4 Recommendation Modes',  color: '#818cf8' },
-                { icon: BarChart2,   label: 'Reading Stats & Charts',  color: '#60a5fa' },
-                { icon: Target,      label: 'Goals & Streaks',         color: '#f59e0b' },
-                { icon: TrendingUp,  label: 'Top 50 Trending',         color: '#fbbf24' },
-                { icon: Users,       label: 'Community Reviews',       color: '#34d399' },
+                { icon: Library,    label: 'Library Tracking',       color: '#4ade80' },
+                { icon: Sparkles,   label: '4 Recommendation Modes', color: '#818cf8' },
+                { icon: BarChart2,  label: 'Reading Stats & Charts', color: '#60a5fa' },
+                { icon: Target,     label: 'Goals & Streaks',        color: '#f59e0b' },
+                { icon: TrendingUp, label: 'Top 50 Trending',        color: '#fbbf24' },
+                { icon: Users,      label: 'Community Reviews',      color: '#34d399' },
               ].map(({ icon: Icon, label, color }) => (
                 <span
                   key={label}
@@ -182,12 +176,10 @@ export default function HomePage() {
 
               {/* 1 · Library */}
               <div
-                className="rounded-2xl border p-6 transition-all hover:border-green-500/40"
+                className="rounded-2xl border p-6 transition-all hover:border-indigo-500/40"
                 style={{ backgroundColor: '#1a1d27', borderColor: '#2a2d3e' }}
               >
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: 'rgba(74,222,128,0.1)' }}>
-                  <Library className="w-5 h-5" style={{ color: '#4ade80' }} />
-                </div>
+                <Library className="w-6 h-6 mb-4" style={{ color: '#4ade80' }} />
                 <h3 className="font-bold text-base mb-2 tracking-tight" style={{ color: '#f0f0f5' }}>Personal Library</h3>
                 <p className="text-sm leading-relaxed mb-4" style={{ color: '#8b8fa8' }}>
                   Organise every book into four shelves — Wishlist, Reading, Finished, and Did Not Finish. Track pages, add private notes, and see your full reading history.
@@ -210,9 +202,7 @@ export default function HomePage() {
                 className="rounded-2xl border p-6 transition-all hover:border-indigo-500/40"
                 style={{ backgroundColor: '#1a1d27', borderColor: '#2a2d3e' }}
               >
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: 'rgba(99,102,241,0.12)' }}>
-                  <Sparkles className="w-5 h-5" style={{ color: '#818cf8' }} />
-                </div>
+                <Sparkles className="w-6 h-6 mb-4" style={{ color: '#818cf8' }} />
                 <h3 className="font-bold text-base mb-2 tracking-tight" style={{ color: '#f0f0f5' }}>Smart Recommendations</h3>
                 <p className="text-sm leading-relaxed mb-4" style={{ color: '#8b8fa8' }}>
                   Four recommendation modes that learn your taste: discover books by favourite author, genre, current mood, or based on your full reading history.
@@ -232,22 +222,19 @@ export default function HomePage() {
 
               {/* 3 · Stats */}
               <div
-                className="rounded-2xl border p-6 transition-all hover:border-blue-500/40"
+                className="rounded-2xl border p-6 transition-all hover:border-indigo-500/40"
                 style={{ backgroundColor: '#1a1d27', borderColor: '#2a2d3e' }}
               >
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: 'rgba(96,165,250,0.1)' }}>
-                  <BarChart2 className="w-5 h-5" style={{ color: '#60a5fa' }} />
-                </div>
+                <BarChart2 className="w-6 h-6 mb-4" style={{ color: '#60a5fa' }} />
                 <h3 className="font-bold text-base mb-2 tracking-tight" style={{ color: '#f0f0f5' }}>Reading Stats &amp; Charts</h3>
                 <p className="text-sm leading-relaxed mb-4" style={{ color: '#8b8fa8' }}>
                   Monthly reading bar charts, top genres, favourite authors, and star-rating distribution — a full picture of your reading life.
                 </p>
-                {/* Mini bar chart */}
                 <div className="flex items-end gap-1" style={{ height: '36px' }}>
                   {[35, 60, 45, 80, 55, 95, 40, 70, 50, 85, 60, 75].map((h, i) => (
                     <div
                       key={i}
-                      className="flex-1 rounded-sm transition-all"
+                      className="flex-1 rounded-sm"
                       style={{ height: `${h}%`, backgroundColor: i === 5 ? '#818cf8' : '#2a2d3e' }}
                     />
                   ))}
@@ -256,17 +243,14 @@ export default function HomePage() {
 
               {/* 4 · Goals & Streaks */}
               <div
-                className="rounded-2xl border p-6 transition-all hover:border-amber-500/40"
+                className="rounded-2xl border p-6 transition-all hover:border-indigo-500/40"
                 style={{ backgroundColor: '#1a1d27', borderColor: '#2a2d3e' }}
               >
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: 'rgba(245,158,11,0.1)' }}>
-                  <Target className="w-5 h-5" style={{ color: '#f59e0b' }} />
-                </div>
+                <Target className="w-6 h-6 mb-4" style={{ color: '#f59e0b' }} />
                 <h3 className="font-bold text-base mb-2 tracking-tight" style={{ color: '#f0f0f5' }}>Reading Goals &amp; Streaks</h3>
                 <p className="text-sm leading-relaxed mb-4" style={{ color: '#8b8fa8' }}>
                   Set an annual reading goal, track your streak month by month, and celebrate every milestone along the way.
                 </p>
-                {/* Mini goal progress */}
                 <div>
                   <div className="flex items-center justify-between text-xs mb-2" style={{ color: '#8b8fa8' }}>
                     <span>Annual Goal</span>
@@ -283,17 +267,14 @@ export default function HomePage() {
 
               {/* 5 · Trending */}
               <div
-                className="rounded-2xl border p-6 transition-all hover:border-amber-500/40"
+                className="rounded-2xl border p-6 transition-all hover:border-indigo-500/40"
                 style={{ backgroundColor: '#1a1d27', borderColor: '#2a2d3e' }}
               >
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: 'rgba(251,191,36,0.1)' }}>
-                  <TrendingUp className="w-5 h-5" style={{ color: '#fbbf24' }} />
-                </div>
+                <TrendingUp className="w-6 h-6 mb-4" style={{ color: '#fbbf24' }} />
                 <h3 className="font-bold text-base mb-2 tracking-tight" style={{ color: '#f0f0f5' }}>Top 50 Trending</h3>
                 <p className="text-sm leading-relaxed mb-4" style={{ color: '#8b8fa8' }}>
                   A curated, daily-refreshed list of 50 books readers are buzzing about. Discover your next obsession every single day.
                 </p>
-                {/* Mini rank list */}
                 <div className="space-y-2">
                   {[['#FFD700', '#0f1117', '1', 'The Midnight Library'],
                     ['#94a3b8', '#0f1117', '2', 'Tomorrow & Tomorrow'],
@@ -313,17 +294,14 @@ export default function HomePage() {
 
               {/* 6 · Search */}
               <div
-                className="rounded-2xl border p-6 transition-all hover:border-purple-500/40"
+                className="rounded-2xl border p-6 transition-all hover:border-indigo-500/40"
                 style={{ backgroundColor: '#1a1d27', borderColor: '#2a2d3e' }}
               >
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: 'rgba(167,139,250,0.1)' }}>
-                  <Search className="w-5 h-5" style={{ color: '#a78bfa' }} />
-                </div>
+                <Search className="w-6 h-6 mb-4" style={{ color: '#a78bfa' }} />
                 <h3 className="font-bold text-base mb-2 tracking-tight" style={{ color: '#f0f0f5' }}>Powerful Book Search</h3>
                 <p className="text-sm leading-relaxed mb-4" style={{ color: '#8b8fa8' }}>
                   Search millions of books by title, author, or ISBN via Open Library. One click adds anything you find straight to your library.
                 </p>
-                {/* Mini search bar mockup */}
                 <div
                   className="flex items-center gap-2 rounded-xl px-3 py-2.5"
                   style={{ backgroundColor: '#0f1117', border: '1px solid #2a2d3e' }}
@@ -335,17 +313,14 @@ export default function HomePage() {
 
               {/* 7 · Reviews & Notes */}
               <div
-                className="rounded-2xl border p-6 transition-all hover:border-yellow-500/40"
+                className="rounded-2xl border p-6 transition-all hover:border-indigo-500/40"
                 style={{ backgroundColor: '#1a1d27', borderColor: '#2a2d3e' }}
               >
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: 'rgba(251,191,36,0.1)' }}>
-                  <MessageSquare className="w-5 h-5" style={{ color: '#fbbf24' }} />
-                </div>
+                <MessageSquare className="w-6 h-6 mb-4" style={{ color: '#fbbf24' }} />
                 <h3 className="font-bold text-base mb-2 tracking-tight" style={{ color: '#f0f0f5' }}>Reviews &amp; Notes</h3>
                 <p className="text-sm leading-relaxed mb-4" style={{ color: '#8b8fa8' }}>
                   Write star-rated reviews for every book you finish. Keep private reading notes and page progress. Your personal reading diary.
                 </p>
-                {/* Stars + quote */}
                 <div>
                   <div className="flex items-center gap-0.5 mb-2">
                     {[1, 2, 3, 4, 5].map((s) => (
@@ -360,17 +335,14 @@ export default function HomePage() {
 
               {/* 8 · Community */}
               <div
-                className="rounded-2xl border p-6 transition-all hover:border-emerald-500/40"
+                className="rounded-2xl border p-6 transition-all hover:border-indigo-500/40"
                 style={{ backgroundColor: '#1a1d27', borderColor: '#2a2d3e' }}
               >
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: 'rgba(52,211,153,0.1)' }}>
-                  <Users className="w-5 h-5" style={{ color: '#34d399' }} />
-                </div>
+                <Users className="w-6 h-6 mb-4" style={{ color: '#34d399' }} />
                 <h3 className="font-bold text-base mb-2 tracking-tight" style={{ color: '#f0f0f5' }}>Community &amp; Leaderboards</h3>
                 <p className="text-sm leading-relaxed mb-4" style={{ color: '#8b8fa8' }}>
                   Browse the community review feed, explore public reader profiles, and see who&apos;s reading what on the active readers leaderboard.
                 </p>
-                {/* Avatar row */}
                 <div className="flex items-center gap-1">
                   {['A', 'J', 'M', 'R', 'S', 'K'].map((letter, i) => (
                     <div
@@ -394,17 +366,14 @@ export default function HomePage() {
 
               {/* 9 · Daily Content */}
               <div
-                className="rounded-2xl border p-6 transition-all hover:border-pink-500/40"
+                className="rounded-2xl border p-6 transition-all hover:border-indigo-500/40"
                 style={{ backgroundColor: '#1a1d27', borderColor: '#2a2d3e' }}
               >
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: 'rgba(244,114,182,0.1)' }}>
-                  <Quote className="w-5 h-5" style={{ color: '#f472b6' }} />
-                </div>
+                <BookOpen className="w-6 h-6 mb-4" style={{ color: '#f472b6' }} />
                 <h3 className="font-bold text-base mb-2 tracking-tight" style={{ color: '#f0f0f5' }}>Daily Reading Content</h3>
                 <p className="text-sm leading-relaxed mb-4" style={{ color: '#8b8fa8' }}>
                   Fresh every session — a literary quote, word of the day with definition, a &ldquo;Did You Know&rdquo; fact, and a book trivia challenge.
                 </p>
-                {/* Quote snippet */}
                 <div
                   className="rounded-xl p-3"
                   style={{ backgroundColor: '#0f1117', borderLeft: '3px solid rgba(99,102,241,0.5)' }}
@@ -428,15 +397,13 @@ export default function HomePage() {
           <div className="max-w-5xl mx-auto">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
               {[
-                { icon: BookMarked, color: '#818cf8', bg: 'rgba(99,102,241,0.1)', label: 'Goodreads Import', sub: 'Migrate your shelves instantly' },
-                { icon: Flame,      color: '#f97316', bg: 'rgba(249,115,22,0.1)',  label: 'Reading Streaks',  sub: 'Track consecutive months' },
-                { icon: CheckCircle, color: '#4ade80', bg: 'rgba(74,222,128,0.1)', label: 'Library CSV Export', sub: '15-column full export' },
-                { icon: BookOpen,   color: '#60a5fa', bg: 'rgba(96,165,250,0.1)',  label: 'Public Profiles',  sub: 'Share your reading journey' },
-              ].map(({ icon: Icon, color, bg, label, sub }) => (
+                { icon: FileText,     color: '#818cf8', label: 'Goodreads Import',   sub: 'Migrate your shelves instantly' },
+                { icon: Star,         color: '#f97316', label: 'Reading Streaks',    sub: 'Track consecutive months'      },
+                { icon: CheckCircle,  color: '#4ade80', label: 'Library CSV Export', sub: '15-column full export'         },
+                { icon: User,         color: '#60a5fa', label: 'Public Profiles',    sub: 'Share your reading journey'    },
+              ].map(({ icon: Icon, color, label, sub }) => (
                 <div key={label} className="flex flex-col items-center gap-2">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: bg }}>
-                    <Icon className="w-5 h-5" style={{ color }} />
-                  </div>
+                  <Icon className="w-8 h-8" style={{ color }} />
                   <p className="text-sm font-semibold" style={{ color: '#f0f0f5' }}>{label}</p>
                   <p className="text-xs" style={{ color: '#6b7280' }}>{sub}</p>
                 </div>
@@ -574,19 +541,19 @@ export default function HomePage() {
                   num: '03',
                   icon: Sparkles,
                   color: '#f472b6',
-                  title: 'Discover &amp; grow',
+                  title: 'Discover & grow',
                   desc: 'Get personalised recommendations, hit your reading goals, and connect with other readers.',
                 },
               ].map(({ num, icon: Icon, color, title, desc }) => (
                 <div key={num} className="text-center">
                   <div
                     className="w-16 h-16 rounded-2xl flex flex-col items-center justify-center mx-auto mb-5"
-                    style={{ backgroundColor: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.25)' }}
+                    style={{ backgroundColor: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.25)' }}
                   >
                     <Icon className="w-6 h-6" style={{ color }} />
                     <span className="text-xs font-bold mt-0.5" style={{ color: '#4a4d62' }}>{num}</span>
                   </div>
-                  <h3 className="font-bold text-base mb-2 tracking-tight" style={{ color: '#f0f0f5' }} dangerouslySetInnerHTML={{ __html: title }} />
+                  <h3 className="font-bold text-base mb-2 tracking-tight" style={{ color: '#f0f0f5' }}>{title}</h3>
                   <p className="text-sm leading-relaxed" style={{ color: '#8b8fa8' }}>{desc}</p>
                 </div>
               ))}
@@ -601,7 +568,6 @@ export default function HomePage() {
               className="rounded-3xl border p-10 md:p-14 text-center relative overflow-hidden"
               style={{ backgroundColor: '#1a1d27', borderColor: '#2a2d3e' }}
             >
-              {/* Glow */}
               <div
                 className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-48 pointer-events-none"
                 style={{
@@ -657,11 +623,11 @@ export default function HomePage() {
         className="py-6 text-center text-xs border-t flex-shrink-0"
         style={{ color: '#4a4d62', borderColor: '#2a2d3e' }}
       >
-        <div className="flex items-center justify-center gap-2 mb-1.5">
-          <div className="w-5 h-5 rounded flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#6366f1' }}>
-            <BookOpen className="w-3 h-3 text-white" />
+        <div className="flex items-center justify-center gap-2.5 mb-1.5">
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#6366f1' }}>
+            <BookOpen className="w-4 h-4 text-white" />
           </div>
-          <span className="font-semibold" style={{ color: '#6b7280' }}>Folio</span>
+          <span className="font-bold text-base" style={{ color: '#f0f0f5' }}>Folio</span>
         </div>
         <p>Powered by Open Library &middot; Free forever</p>
       </footer>
