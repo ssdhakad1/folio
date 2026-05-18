@@ -32,8 +32,8 @@ async function sendPasswordResetEmail(toEmail, resetUrl) {
                   <td style="padding:32px 32px 24px;border-bottom:1px solid #2a2d3e;">
                     <table cellpadding="0" cellspacing="0">
                       <tr>
-                        <td style="background:#6366f1;border-radius:8px;width:32px;height:32px;text-align:center;vertical-align:middle;padding:6px;">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 0 3-3h7z"/></svg>
+                        <td style="background:#6366f1;border-radius:8px;width:32px;height:32px;text-align:center;vertical-align:middle;font-size:18px;line-height:32px;">
+                          📖
                         </td>
                         <td style="padding-left:10px;">
                           <span style="color:#f0f0f5;font-size:18px;font-weight:700;">Folio</span>

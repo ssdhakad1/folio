@@ -53,10 +53,10 @@ export default function ForgotPasswordPage() {
               <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{backgroundColor:'rgba(34,197,94,0.1)'}}>
                 <CheckCircle className="w-7 h-7" style={{color:'#4ade80'}} />
               </div>
-              <h2 className="text-base font-bold mb-2" style={{color:'#f0f0f5'}}>Check Your Inbox</h2>
+              <h2 className="text-base font-bold mb-2" style={{color:'#f0f0f5'}}>Check Your Email</h2>
               <p className="text-sm leading-relaxed mb-6" style={{color:'#8b8fa8'}}>
                 If an account with <span className="font-medium" style={{color:'#f0f0f5'}}>{email}</span> exists,
-                a password reset link has been sent. Check your inbox and <span className="font-medium" style={{color:'#f0f0f5'}}>spam folder</span>.
+                a password reset link has been sent. <span className="font-medium" style={{color:'#f0f0f5'}}>Check your inbox and spam folder.</span>
               </p>
 
               {/* Dev mode: show reset URL directly */}
