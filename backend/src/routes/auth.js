@@ -32,8 +32,8 @@ async function sendPasswordResetEmail(toEmail, resetUrl) {
                   <td style="padding:32px 32px 24px;border-bottom:1px solid #2a2d3e;">
                     <table cellpadding="0" cellspacing="0">
                       <tr>
-                        <td style="background:#6366f1;border-radius:8px;width:32px;height:32px;text-align:center;vertical-align:middle;font-size:18px;line-height:32px;">
-                          📖
+                        <td style="background:#6366f1;border-radius:8px;width:32px;height:32px;text-align:center;vertical-align:middle;">
+                          <span style="font-size:16px;line-height:1;display:block;margin-top:6px;">📖</span>
                         </td>
                         <td style="padding-left:10px;">
                           <span style="color:#f0f0f5;font-size:18px;font-weight:700;">Folio</span>
