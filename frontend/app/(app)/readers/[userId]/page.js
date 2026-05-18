@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import {
   User, Calendar, BookOpen, CheckCircle, Bookmark,
-  Star, MessageSquare, Loader2, ArrowLeft,
+  Star, MessageSquare, Loader2, ArrowLeft, Search, X,
 } from 'lucide-react';
 import { useAuth } from '../../../../context/AuthContext';
 import { community as communityApi } from '../../../../lib/api';
@@ -33,9 +33,10 @@ export default function ReaderProfilePage() {
   const params = useParams();
   const userId = params?.userId;
 
-  const [profile, setProfile]   = useState(null);
-  const [loading, setLoading]   = useState(true);
-  const [error, setError]       = useState('');
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError]     = useState('');
+  const [bookSearch, setBookSearch] = useState('');
 
   // Auth guard
   useEffect(() => {
@@ -62,7 +63,27 @@ export default function ReaderProfilePage() {
     return () => { cancelled = true; };
   }, [userId, authUser]);
 
-  // Loading / auth spinner
+  // Filtered books & reviews
+  const filteredEntries = useMemo(() => {
+    if (!profile) return [];
+    const q = bookSearch.trim().toLowerCase();
+    if (!q) return profile.finishedEntries;
+    return profile.finishedEntries.filter(e =>
+      e.book?.title?.toLowerCase().includes(q) ||
+      e.book?.author?.toLowerCase().includes(q)
+    );
+  }, [profile, bookSearch]);
+
+  const filteredReviews = useMemo(() => {
+    if (!profile) return [];
+    const q = bookSearch.trim().toLowerCase();
+    if (!q) return profile.reviews;
+    return profile.reviews.filter(r =>
+      r.book?.title?.toLowerCase().includes(q) ||
+      r.book?.author?.toLowerCase().includes(q)
+    );
+  }, [profile, bookSearch]);
+
   if (authLoading || !authUser) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#0f1117' }}>
@@ -76,6 +97,7 @@ export default function ReaderProfilePage() {
     : null;
 
   const isOwnProfile = authUser?.id === userId;
+  const hasContent   = profile && (profile.finishedEntries.length > 0 || profile.reviews.length > 0);
 
   return (
     <div className="min-h-screen pb-16" style={{ backgroundColor: '#0f1117' }}>
@@ -155,9 +177,7 @@ export default function ReaderProfilePage() {
                   {joinDate && (
                     <div className="flex items-center gap-1.5 mt-1">
                       <Calendar className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#4a4d62' }} />
-                      <span className="text-sm" style={{ color: '#6b7280' }}>
-                        Member since {joinDate}
-                      </span>
+                      <span className="text-sm" style={{ color: '#6b7280' }}>Member since {joinDate}</span>
                     </div>
                   )}
                   {isOwnProfile && (
@@ -174,143 +194,193 @@ export default function ReaderProfilePage() {
 
               {/* Stats grid */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5">
-                <StatTile icon={CheckCircle} color="#4ade80" value={profile.stats.finished}               label="Finished"   />
-                <StatTile icon={BookOpen}    color="#818cf8" value={profile.stats.reading}                label="Reading"    />
-                <StatTile icon={Bookmark}    color="#f59e0b" value={profile.stats.wishlist}               label="Wishlist"   />
-                <StatTile icon={Star}        color="#fbbf24" value={profile.stats.avgRating ?? '—'}       label="Avg Rating" />
+                <StatTile icon={CheckCircle} color="#4ade80" value={profile.stats.finished}         label="Finished"   />
+                <StatTile icon={BookOpen}    color="#818cf8" value={profile.stats.reading}          label="Reading"    />
+                <StatTile icon={Bookmark}    color="#f59e0b" value={profile.stats.wishlist}         label="Wishlist"   />
+                <StatTile icon={Star}        color="#fbbf24" value={profile.stats.avgRating ?? '—'} label="Avg Rating" />
               </div>
             </div>
 
+            {/* ── Book search (only when there's something to search) ── */}
+            {hasContent && (
+              <div className="relative mb-6">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" style={{ color: '#4a4d62' }} />
+                <input
+                  type="text"
+                  value={bookSearch}
+                  onChange={e => setBookSearch(e.target.value)}
+                  placeholder={`Search ${isOwnProfile ? 'your' : `${profile.user.name}'s`} books…`}
+                  className="w-full pl-9 pr-9 py-2.5 rounded-xl text-sm border outline-none transition-colors focus:border-indigo-500/60"
+                  style={{ backgroundColor: '#1a1d27', borderColor: '#2a2d3e', color: '#f0f0f5' }}
+                />
+                {bookSearch && (
+                  <button
+                    onClick={() => setBookSearch('')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors hover:text-indigo-400"
+                    style={{ color: '#4a4d62' }}
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
+            )}
+
             {/* ── Finished books grid ── */}
-            {profile.finishedEntries.length > 0 && (
+            {(filteredEntries.length > 0 || (bookSearch && profile.finishedEntries.length > 0)) && (
               <div className="mb-8">
                 <h2
                   className="text-xs font-semibold uppercase tracking-wider mb-4"
                   style={{ color: '#4a4d62' }}
                 >
-                  Books Read · {profile.finishedEntries.length}
+                  Books Read · {filteredEntries.length}
+                  {bookSearch.trim() && filteredEntries.length !== profile.finishedEntries.length &&
+                    ` of ${profile.finishedEntries.length}`}
                 </h2>
-                <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2">
-                  {profile.finishedEntries.map((entry) => (
-                    <Link key={entry.id} href={`/book/${entry.book.googleBooksId}`}>
-                      <div
-                        className="aspect-[2/3] rounded-lg overflow-hidden transition-transform hover:scale-105"
-                        style={{ backgroundColor: '#2a2d3e' }}
-                        title={entry.book.title}
-                      >
-                        {entry.book.coverUrl ? (
-                          <Image
-                            src={entry.book.coverUrl}
-                            alt={entry.book.title}
-                            width={80}
-                            height={120}
-                            className="w-full h-full object-cover"
-                            unoptimized
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <BookOpen className="w-5 h-5" style={{ color: '#4a4d62' }} />
-                          </div>
-                        )}
-                      </div>
-                    </Link>
-                  ))}
-                </div>
+
+                {filteredEntries.length === 0 ? (
+                  <div
+                    className="rounded-2xl border p-6 text-center"
+                    style={{ backgroundColor: '#1a1d27', borderColor: '#2a2d3e' }}
+                  >
+                    <p className="text-sm" style={{ color: '#8b8fa8' }}>
+                      No books match &ldquo;{bookSearch}&rdquo;
+                    </p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2">
+                    {filteredEntries.map(entry => (
+                      <Link key={entry.id} href={`/book/${entry.book.googleBooksId}`}>
+                        <div
+                          className="aspect-[2/3] rounded-lg overflow-hidden transition-transform hover:scale-105"
+                          style={{ backgroundColor: '#2a2d3e' }}
+                          title={entry.book.title}
+                        >
+                          {entry.book.coverUrl ? (
+                            <Image
+                              src={entry.book.coverUrl}
+                              alt={entry.book.title}
+                              width={80}
+                              height={120}
+                              className="w-full h-full object-cover"
+                              unoptimized
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <BookOpen className="w-5 h-5" style={{ color: '#4a4d62' }} />
+                            </div>
+                          )}
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
 
             {/* ── Reviews ── */}
-            {profile.reviews.length > 0 && (
+            {(filteredReviews.length > 0 || (bookSearch && profile.reviews.length > 0)) && (
               <div>
                 <h2
                   className="text-xs font-semibold uppercase tracking-wider mb-4"
                   style={{ color: '#4a4d62' }}
                 >
-                  Reviews · {profile.reviews.length}
+                  Reviews · {filteredReviews.length}
+                  {bookSearch.trim() && filteredReviews.length !== profile.reviews.length &&
+                    ` of ${profile.reviews.length}`}
                 </h2>
-                <div className="space-y-3">
-                  {profile.reviews.map((review) => (
-                    <div
-                      key={review.id}
-                      className="rounded-2xl border p-4"
-                      style={{ backgroundColor: '#1a1d27', borderColor: '#2a2d3e' }}
-                    >
-                      <div className="flex gap-3">
-                        {/* Cover */}
-                        {review.book?.coverUrl && (
-                          <Link href={`/book/${review.book.googleBooksId}`} className="flex-shrink-0">
-                            <div
-                              className="w-10 h-14 rounded-lg overflow-hidden"
-                              style={{ backgroundColor: '#2a2d3e' }}
+
+                {filteredReviews.length === 0 ? (
+                  <div
+                    className="rounded-2xl border p-6 text-center"
+                    style={{ backgroundColor: '#1a1d27', borderColor: '#2a2d3e' }}
+                  >
+                    <p className="text-sm" style={{ color: '#8b8fa8' }}>
+                      No reviews match &ldquo;{bookSearch}&rdquo;
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {filteredReviews.map(review => (
+                      <div
+                        key={review.id}
+                        className="rounded-2xl border p-4"
+                        style={{ backgroundColor: '#1a1d27', borderColor: '#2a2d3e' }}
+                      >
+                        <div className="flex gap-3">
+                          {/* Cover */}
+                          {review.book?.coverUrl && (
+                            <Link href={`/book/${review.book.googleBooksId}`} className="flex-shrink-0">
+                              <div
+                                className="w-10 h-14 rounded-lg overflow-hidden"
+                                style={{ backgroundColor: '#2a2d3e' }}
+                              >
+                                <Image
+                                  src={review.book.coverUrl}
+                                  alt={review.book.title}
+                                  width={40}
+                                  height={56}
+                                  className="w-full h-full object-cover"
+                                  unoptimized
+                                />
+                              </div>
+                            </Link>
+                          )}
+
+                          <div className="min-w-0 flex-1">
+                            <Link
+                              href={`/book/${review.book?.googleBooksId}`}
+                              className="font-semibold text-sm hover:text-indigo-400 transition-colors"
+                              style={{ color: '#f0f0f5' }}
                             >
-                              <Image
-                                src={review.book.coverUrl}
-                                alt={review.book.title}
-                                width={40}
-                                height={56}
-                                className="w-full h-full object-cover"
-                                unoptimized
-                              />
+                              {review.book?.title}
+                            </Link>
+                            <p className="text-xs mb-1.5" style={{ color: '#6b7280' }}>
+                              {review.book?.author}
+                            </p>
+
+                            {/* Stars */}
+                            <div className="flex items-center gap-0.5 mb-2">
+                              {[1, 2, 3, 4, 5].map(s => (
+                                <Star
+                                  key={s}
+                                  className="w-3 h-3"
+                                  style={{ color: s <= review.rating ? '#fbbf24' : '#2a2d3e' }}
+                                  fill={s <= review.rating ? '#fbbf24' : 'none'}
+                                />
+                              ))}
                             </div>
-                          </Link>
-                        )}
 
-                        <div className="min-w-0 flex-1">
-                          <Link
-                            href={`/book/${review.book?.googleBooksId}`}
-                            className="font-semibold text-sm hover:text-indigo-400 transition-colors"
-                            style={{ color: '#f0f0f5' }}
-                          >
-                            {review.book?.title}
-                          </Link>
-                          <p className="text-xs mb-1.5" style={{ color: '#6b7280' }}>
-                            {review.book?.author}
-                          </p>
+                            <p
+                              className="text-sm leading-relaxed"
+                              style={{
+                                color: '#8b8fa8',
+                                display: '-webkit-box',
+                                WebkitLineClamp: 4,
+                                WebkitBoxOrient: 'vertical',
+                                overflow: 'hidden',
+                              }}
+                            >
+                              {review.content}
+                            </p>
 
-                          {/* Stars */}
-                          <div className="flex items-center gap-0.5 mb-2">
-                            {[1, 2, 3, 4, 5].map((s) => (
-                              <Star
-                                key={s}
-                                className="w-3 h-3"
-                                style={{ color: s <= review.rating ? '#fbbf24' : '#2a2d3e' }}
-                                fill={s <= review.rating ? '#fbbf24' : 'none'}
-                              />
-                            ))}
+                            <p className="text-xs mt-2" style={{ color: '#4a4d62' }}>
+                              {new Date(review.createdAt).toLocaleDateString('en-US', {
+                                month: 'long',
+                                day: 'numeric',
+                                year: 'numeric',
+                              })}
+                            </p>
                           </div>
-
-                          {/* Review content */}
-                          <p
-                            className="text-sm leading-relaxed"
-                            style={{
-                              color: '#8b8fa8',
-                              display: '-webkit-box',
-                              WebkitLineClamp: 4,
-                              WebkitBoxOrient: 'vertical',
-                              overflow: 'hidden',
-                            }}
-                          >
-                            {review.content}
-                          </p>
-
-                          {/* Date */}
-                          <p className="text-xs mt-2" style={{ color: '#4a4d62' }}>
-                            {new Date(review.createdAt).toLocaleDateString('en-US', {
-                              month: 'long',
-                              day: 'numeric',
-                              year: 'numeric',
-                            })}
-                          </p>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
 
-            {/* ── Empty state ── */}
-            {profile.finishedEntries.length === 0 && profile.reviews.length === 0 && (
+            {/* ── Empty state (no content at all) ── */}
+            {!hasContent && (
               <div
                 className="rounded-2xl border p-10 text-center"
                 style={{ backgroundColor: '#1a1d27', borderColor: '#2a2d3e' }}
@@ -319,7 +389,7 @@ export default function ReaderProfilePage() {
                 <p className="text-sm" style={{ color: '#8b8fa8' }}>
                   {isOwnProfile
                     ? "You haven't finished any books yet — keep reading!"
-                    : 'This reader hasn\'t finished any books yet.'}
+                    : "This reader hasn't finished any books yet."}
                 </p>
                 {isOwnProfile && (
                   <Link
