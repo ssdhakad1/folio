@@ -207,7 +207,7 @@ export default function SearchPage() {
         {!loading && searched && results.length === 0 && !error && (
           <div className="text-center py-20">
             <BookOpen className="w-12 h-12 mx-auto mb-4 opacity-30" style={{color:'#4a4d62'}} />
-            <p className="text-lg" style={{color:'#8b8fa8'}}>No results found for &quot;{lastQuery}&quot;</p>
+            <p className="text-lg" style={{color:'#8b8fa8'}}>No Results Found for &quot;{lastQuery}&quot;</p>
             <p className="text-sm mt-1" style={{color:'#4a4d62'}}>Try a different search term.</p>
           </div>
         )}

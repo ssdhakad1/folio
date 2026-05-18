@@ -255,7 +255,7 @@ export default function BookDetailPage() {
                   <p className="text-xs" style={{color:'#4a4d62'}}>Pages</p>
                   {book.pageCount
                     ? <p className="text-sm font-medium" style={{color:'#f0f0f5'}}>{book.pageCount}</p>
-                    : <p className="text-sm" style={{color:'#4a4d62'}}>No page count available</p>
+                    : <p className="text-sm" style={{color:'#4a4d62'}}>No Page Count Available</p>
                   }
                 </div>
               </div>

@@ -226,7 +226,7 @@ export default function CommunityPage() {
                   type="text"
                   value={reviewSearch}
                   onChange={e => setReviewSearch(e.target.value)}
-                  placeholder="Search reviews by book or author…"
+                  placeholder="Book or author…"
                   className="w-full pl-9 pr-9 py-2.5 rounded-xl text-sm border outline-none transition-colors focus:border-indigo-500/60"
                   style={{ backgroundColor: '#1a1d27', borderColor: '#2a2d3e', color: '#f0f0f5' }}
                 />
@@ -257,7 +257,7 @@ export default function CommunityPage() {
                 >
                   <MessageSquare className="w-8 h-8 mx-auto mb-3" style={{ color: '#4a4d62' }} />
                   <p className="text-sm font-medium mb-1" style={{ color: '#f0f0f5' }}>
-                    {reviewSearch.trim() ? 'No reviews found' : 'No reviews yet'}
+                    {reviewSearch.trim() ? 'No Reviews Found' : 'No Reviews Yet'}
                   </p>
                   <p className="text-xs" style={{ color: '#8b8fa8' }}>
                     {reviewSearch.trim()
@@ -310,7 +310,7 @@ export default function CommunityPage() {
                   <div className="p-6 text-center">
                     <Users className="w-7 h-7 mx-auto mb-3" style={{ color: '#4a4d62' }} />
                     <p className="text-sm" style={{ color: '#8b8fa8' }}>
-                      {userSearch.trim() ? `No readers match "${userSearch.trim()}"` : 'No readers yet.'}
+                      {userSearch.trim() ? `No Readers Match "${userSearch.trim()}"` : 'No Readers Yet.'}
                     </p>
                   </div>
                 ) : (

@@ -547,7 +547,7 @@ function LibraryOnboarding({ onImport }) {
       <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5" style={{backgroundColor:'rgba(99,102,241,0.1)'}}>
         <Library className="w-8 h-8" style={{color:'rgba(99,102,241,0.6)'}} />
       </div>
-      <h2 className="text-lg font-bold mb-2" style={{color:'#f0f0f5'}}>Your library is empty</h2>
+      <h2 className="text-lg font-bold mb-2" style={{color:'#f0f0f5'}}>Your Library is Empty</h2>
       <p className="text-sm leading-relaxed mb-8" style={{color:'#8b8fa8'}}>
         Start building your reading list. Track what you&apos;ve read, what you&apos;re reading, and what&apos;s up next — all in one place.
       </p>
@@ -939,8 +939,8 @@ export default function LibraryPage() {
                 <BookOpen className="w-12 h-12 mx-auto mb-4 opacity-30" />
                 <p className="text-lg" style={{color:'#8b8fa8'}}>
                   {searchQuery.trim()
-                    ? `No books matching "${searchQuery}"`
-                    : `No books in ${STATUS_LABELS[filter] || filter}`}
+                    ? `No Books Matching "${searchQuery}"`
+                    : `No Books in ${STATUS_LABELS[filter] || filter}`}
                 </p>
                 {!searchQuery.trim() && (
                   <p className="text-sm mt-2" style={{color:'#4a4d62'}}>

@@ -185,7 +185,7 @@ function RatingChart({ data, reviews }) {
         )}
       </div>
       {total === 0 ? (
-        <p className="text-xs text-center py-4" style={{color:'#4a4d62'}}>No reviews yet.</p>
+        <p className="text-xs text-center py-4" style={{color:'#4a4d62'}}>No Reviews Yet.</p>
       ) : (
         <div className="space-y-2.5">
           {[...data].reverse().map(({ stars, count }) => (
@@ -408,7 +408,7 @@ export default function StatsPage() {
         {entries.length === 0 ? (
           <div className="rounded-2xl border px-8 py-16 text-center" style={{backgroundColor:'#1a1d27', borderColor:'#2a2d3e'}}>
             <BarChart2 className="w-12 h-12 mx-auto mb-4 opacity-20" style={{color:'#818cf8'}} />
-            <p className="text-base font-medium mb-2" style={{color:'#8b8fa8'}}>No stats yet</p>
+            <p className="text-base font-medium mb-2" style={{color:'#8b8fa8'}}>No Stats Yet</p>
             <p className="text-sm mb-6" style={{color:'#4a4d62'}}>
               Add books to your library and start reading to see your stats here.
             </p>
@@ -474,7 +474,7 @@ export default function StatsPage() {
                 iconBg="rgba(245,158,11,0.1)"
                 value={avgR || '—'}
                 label="Avg Rating"
-                sub={reviews.length > 0 ? `from ${reviews.length} review${reviews.length !== 1 ? 's' : ''}` : 'no reviews yet'}
+                sub={reviews.length > 0 ? `from ${reviews.length} review${reviews.length !== 1 ? 's' : ''}` : 'No Reviews Yet'}
               />
               <StatCard
                 icon={BookMarked}

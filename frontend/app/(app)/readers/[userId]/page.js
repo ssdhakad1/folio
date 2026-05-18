@@ -243,7 +243,7 @@ export default function ReaderProfilePage() {
                     style={{ backgroundColor: '#1a1d27', borderColor: '#2a2d3e' }}
                   >
                     <p className="text-sm" style={{ color: '#8b8fa8' }}>
-                      No books match &ldquo;{bookSearch}&rdquo;
+                      No Books Match &ldquo;{bookSearch}&rdquo;
                     </p>
                   </div>
                 ) : (
@@ -295,7 +295,7 @@ export default function ReaderProfilePage() {
                     style={{ backgroundColor: '#1a1d27', borderColor: '#2a2d3e' }}
                   >
                     <p className="text-sm" style={{ color: '#8b8fa8' }}>
-                      No reviews match &ldquo;{bookSearch}&rdquo;
+                      No Reviews Match &ldquo;{bookSearch}&rdquo;
                     </p>
                   </div>
                 ) : (
