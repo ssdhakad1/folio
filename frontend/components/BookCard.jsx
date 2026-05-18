@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { BookOpen, Star, Plus, Check, ShoppingBag, Sparkles } from 'lucide-react';
+import { BookOpen, Star, Plus, Check, ShoppingBag, Sparkles, FileText } from 'lucide-react';
 import { library as libraryApi } from '../lib/api';
 import { useState } from 'react';
 import BookSourcesModal from './BookSourcesModal';
@@ -69,11 +69,20 @@ export default function BookCard({ book, isInLibrary = false, onAddToLibrary, ta
         <p className="text-xs mb-2" style={{color:'#8b8fa8'}}>{book.author}</p>
 
         {/* Rating */}
-        <div className="flex items-center gap-1 mb-2">
+        <div className="flex items-center gap-1 mb-1.5">
           <Star className={`w-3 h-3 ${book.averageRating ? 'text-amber-400 fill-amber-400' : ''}`} style={book.averageRating ? {} : {color:'#2a2d3e'}} />
           {book.averageRating
             ? <span className="text-xs text-amber-400">{Number(book.averageRating).toFixed(1)}</span>
-            : <span className="text-xs" style={{color:'#4a4d62'}}>No Rating</span>
+            : <span className="text-xs" style={{color:'#4a4d62'}}>No rating</span>
+          }
+        </div>
+
+        {/* Page count */}
+        <div className="flex items-center gap-1 mb-2">
+          <FileText className="w-3 h-3" style={{color: book.pageCount ? '#6b7280' : '#2a2d3e'}} />
+          {book.pageCount
+            ? <span className="text-xs" style={{color:'#6b7280'}}>{book.pageCount} pages</span>
+            : <span className="text-xs" style={{color:'#4a4d62'}}>No page count</span>
           }
         </div>
 

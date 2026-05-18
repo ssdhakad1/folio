@@ -249,15 +249,16 @@ export default function BookDetailPage() {
                   </div>
                 </div>
               )}
-              {book.pageCount && (
-                <div className="rounded-xl border p-3 flex items-center gap-2.5" style={{backgroundColor:'#1a1d27', borderColor:'#2a2d3e'}}>
-                  <FileText className="w-4 h-4 flex-shrink-0" style={{color:'#4a4d62'}} />
-                  <div>
-                    <p className="text-xs" style={{color:'#4a4d62'}}>Pages</p>
-                    <p className="text-sm font-medium" style={{color:'#f0f0f5'}}>{book.pageCount}</p>
-                  </div>
+              <div className="rounded-xl border p-3 flex items-center gap-2.5" style={{backgroundColor:'#1a1d27', borderColor:'#2a2d3e'}}>
+                <FileText className="w-4 h-4 flex-shrink-0" style={{color:'#4a4d62'}} />
+                <div>
+                  <p className="text-xs" style={{color:'#4a4d62'}}>Pages</p>
+                  {book.pageCount
+                    ? <p className="text-sm font-medium" style={{color:'#f0f0f5'}}>{book.pageCount}</p>
+                    : <p className="text-sm" style={{color:'#4a4d62'}}>No page count available</p>
+                  }
                 </div>
-              )}
+              </div>
               {book.isbn && (
                 <div className="rounded-xl border p-3 flex items-center gap-2.5" style={{backgroundColor:'#1a1d27', borderColor:'#2a2d3e'}}>
                   <Hash className="w-4 h-4 flex-shrink-0" style={{color:'#4a4d62'}} />

@@ -114,9 +114,11 @@ export default function TrendingPage() {
                   {/* Rank badge */}
                   <div
                     className="absolute top-2 left-2 z-10 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold"
-                    style={rank <= 3
-                      ? {backgroundColor:'#f59e0b', color:'#0f1117'}
-                      : {backgroundColor:'rgba(99,102,241,0.9)', color:'white'}
+                    style={
+                      rank === 1 ? {backgroundColor:'#FFD700', color:'#0f1117'} :
+                      rank === 2 ? {backgroundColor:'#94a3b8', color:'#0f1117'} :
+                      rank === 3 ? {backgroundColor:'#b45309', color:'#fff'} :
+                      {backgroundColor:'rgba(99,102,241,0.9)', color:'white'}
                     }
                   >
                     {rank}
