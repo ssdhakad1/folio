@@ -2,17 +2,21 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { isLoggedIn } from '../../lib/auth';
+import { useAuth } from '../../context/AuthContext';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 export default function AppLayout({ children }) {
+  const { user, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoggedIn()) {
-      router.replace('/login');
+    if (!loading && !user) {
+      router.replace('/');
     }
-  }, [router]);
+  }, [user, loading, router]);
 
-  // Add top padding to account for the fixed navbar (h-16 = 64px)
+  // Show spinner while auth resolves — prevents any flash of protected content
+  if (loading || !user) return <LoadingSpinner />;
+
   return <div className="pt-16">{children}</div>;
 }
