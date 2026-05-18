@@ -623,13 +623,7 @@ export default function HomePage() {
         className="py-6 text-center text-xs border-t flex-shrink-0"
         style={{ color: '#4a4d62', borderColor: '#2a2d3e' }}
       >
-        <div className="flex items-center justify-center gap-2.5 mb-1.5">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#6366f1' }}>
-            <BookOpen className="w-4 h-4 text-white" />
-          </div>
-          <span className="font-bold text-base" style={{ color: '#f0f0f5' }}>Folio</span>
-        </div>
-        <p>Powered by Open Library &middot; Free forever</p>
+        <p>Powered by Open Library &middot; Free Forever</p>
       </footer>
 
     </div>
