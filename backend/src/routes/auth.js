@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const nodemailer = require('nodemailer');
+const sgMail = require('@sendgrid/mail');
 const { body, validationResult } = require('express-validator');
 const { PrismaClient } = require('@prisma/client');
 const authMiddleware = require('../middleware/auth');
@@ -12,23 +12,13 @@ const prisma = new PrismaClient();
 
 // ── Email helper ──────────────────────────────────────────────────────────────
 
-function createTransporter() {
-  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) return null;
-  return nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
-}
-
 async function sendPasswordResetEmail(toEmail, resetUrl) {
-  const transporter = createTransporter();
-  if (!transporter) {
-    console.warn('EMAIL_USER / EMAIL_PASS not set — skipping email send.');
+  if (!process.env.SENDGRID_API_KEY) {
+    console.warn('SENDGRID_API_KEY not set — skipping email send.');
     return false;
   }
+
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
   const html = `
     <!DOCTYPE html>
@@ -95,9 +85,9 @@ async function sendPasswordResetEmail(toEmail, resetUrl) {
     </html>
   `;
 
-  await transporter.sendMail({
-    from: `"Folio" <${process.env.EMAIL_USER}>`,
+  await sgMail.send({
     to: toEmail,
+    from: { name: 'Folio', email: process.env.EMAIL_FROM || process.env.EMAIL_USER },
     subject: 'Reset your Folio password',
     html,
   });
