@@ -102,7 +102,7 @@ export default function HomePage() {
               className="font-bold tracking-tight leading-tight mb-6"
               style={{ fontSize: 'clamp(2.4rem, 5.5vw, 4rem)', color: '#f0f0f5' }}
             >
-              Track, Discover,<br />
+              Track, Discover, &amp;<br />
               <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
                 Love Every Book
               </span>
